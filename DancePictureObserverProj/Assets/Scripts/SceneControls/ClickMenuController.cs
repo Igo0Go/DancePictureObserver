@@ -1,23 +1,66 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+/// <summary>
+/// Данный класс используется для отслеживания кликов по интерактивным объектам и мимо них.
+/// </summary>
 public class ClickMenuController : MonoBehaviour
 {
-    [SerializeField] private GameObject menuObj = null;
     [SerializeField] private Camera cam = null;
     [SerializeField] private LayerMask ignoreMask = 0;
 
+    /// <summary>
+    /// Данное событие вызывается, когда пользователь кликнул мимо танцевальной площадки любой кнопокй
+    /// </summary>
+    public event Action EmptyClickEvent;
+
+    private List<ClickCommandObject> interactiveObjectsOnScene;
     private const float clickRayDistance = 50;
 
-    private void Start()
+    private void Awake()
     {
-        menuObj.SetActive(false);
+        interactiveObjectsOnScene = new List<ClickCommandObject>();
     }
 
     private void Update()
     {
         CheckClick();
+    }
+
+    /// <summary>
+    /// Подписать передаваемый объект на события EmptyClick, которое вызывается, когда пользователь кликнул
+    /// мимо танцевальной площадки
+    /// </summary>
+    /// <param name="commandObject">Объект, который будет подписан на событие (если ещё не подписан). У этого объекта будет
+    /// вызываться метод ReturnToDefaultState</param>
+    public void SubscribingToAnEvent(ClickCommandObject commandObject)
+    {
+        if(!interactiveObjectsOnScene.Contains(commandObject))
+        {
+            interactiveObjectsOnScene.Add(commandObject);
+            EmptyClickEvent += commandObject.ReturnToDefaultState;
+        }
+    }
+    /// <summary>
+    /// Отписать передаваемый объект от события EmptyClick, которое вызывается, когда пользователь кликнул
+    /// мимо танцевальной площадки
+    /// </summary>
+    /// <param name="commandObject">Объект, который будет отписан от событие (если был подписан, иначе будет будет выдан Exception).</param>
+    public void UnsubscribingToAnEvent(ClickCommandObject commandObject)
+    {
+        if (interactiveObjectsOnScene.Contains(commandObject))
+        {
+            interactiveObjectsOnScene.Remove(commandObject);
+            EmptyClickEvent -= commandObject.ReturnToDefaultState;
+        }
+        else
+        {
+            throw new Exception(string.Format("Невозможно провести отписку! Объект {0} не найден " +
+                "в коллекции подписчиков на событие EmptyClick.",
+                commandObject.name));
+        }
     }
 
     private void CheckClick()
@@ -33,7 +76,7 @@ public class ClickMenuController : MonoBehaviour
             buttonNumber = 1;
         }
 
-        if(buttonNumber != 0)
+        if (buttonNumber != 0)
         {
             RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition),
                Vector2.zero,
@@ -45,32 +88,26 @@ public class ClickMenuController : MonoBehaviour
 
             if (hit.collider != null)
             {
-                switch (hit.collider.tag)
+                if (hit.collider.TryGetComponent<ClickCommandObject>(out ClickCommandObject commandObject))
                 {
-                    case "Background":
-                        if(buttonNumber > 0)
-                        {
-                            Vector2 clickPoint = hit.point;
-                            menuObj.transform.position = clickPoint;
-                            menuObj.SetActive(true);
-                            return;
-                        }
-                        break;
-                    case "Interactive":
-                        break;
-                    case "UI":
-                        if(buttonNumber < 0)
-                        {
-                            Debug.Log("Command!");
-                            return;
-                        }
-                        break;
-                    default:
-                        break;
+                    if (buttonNumber > 0)
+                    {
+                        commandObject.OnRightClickCommand(hit.point);
+                        return;
+                    }
+                    else
+                    {
+                        commandObject.OnLeftCkickCommand(hit.point);
+                        return;
+                    }
                 }
             }
-
-            menuObj.SetActive(false);
+            EmptyClickEvent?.Invoke();
         }
+    }
+
+    private void OnDestroy()
+    {
+        EmptyClickEvent = null;
     }
 }

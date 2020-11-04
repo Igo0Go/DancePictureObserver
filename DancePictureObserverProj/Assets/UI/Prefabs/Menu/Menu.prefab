@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7563293773225756027}
   m_Layer: 0
   m_Name: Menu
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,9 +42,10 @@ GameObject:
   - component: {fileID: 7689251748462636131}
   - component: {fileID: 7689251748462636132}
   - component: {fileID: 5622014494314239436}
+  - component: {fileID: 7008433923932787431}
   m_Layer: 0
   m_Name: Button_Actor
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,6 +142,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64, y: 0.64}
   m_EdgeRadius: 0
+--- !u!114 &7008433923932787431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7689251748462636133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7ec57576f338b4b8a9557049f8ede9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actorsPanel: {fileID: 0}
 --- !u!1 &7689251748962673442
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,8 +166,8 @@ GameObject:
   - component: {fileID: 7689251748962673440}
   - component: {fileID: 7689251748962673441}
   m_Layer: 0
-  m_Name: MenAvatar
-  m_TagString: UI
+  m_Name: ManAvatar
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234,7 +248,7 @@ GameObject:
   - component: {fileID: 7689251748990712549}
   m_Layer: 0
   m_Name: GirlAvatar
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
