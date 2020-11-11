@@ -1,13 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// Скрипт танцевальной площадки
 /// </summary>
-public class DanceField : ClickCommandObject
+public class DanceField : ClickCommandObject, IEmptyClickEventSender
 {
     [SerializeField] private GameObject menuObj = null;
+
+    private List<ClickCommandObject> interactiveObjectsOnField;
+
+
+    /// <summary>
+    /// Данное событие вызывается, когда пользователь кликнул мимо танцевальной площадки любой кнопокй
+    /// </summary>
+    public event Action EmptyClickEvent;
+
+    protected override void OnStartAction()
+    {
+        interactiveObjectsOnField = new List<ClickCommandObject>();
+        ReturnToDefaultState();
+    }
 
     /// <summary>
     /// Команда, которая будет выполнена при клике левой кнопкой мыши.
@@ -17,6 +31,7 @@ public class DanceField : ClickCommandObject
     public override void OnLeftCkickCommand(Vector2 clickPosition)
     {
         ReturnToDefaultState();
+        EmptyClickEvent?.Invoke();
     }
 
     /// <summary>
@@ -36,5 +51,52 @@ public class DanceField : ClickCommandObject
     public override void ReturnToDefaultState()
     {
         menuObj.SetActive(false);
+    }
+
+    /// <summary>
+    /// Подписать передаваемый объект на события EmptyClick, которое вызывается, когда пользователь кликнул
+    /// мимо танцевальной площадки
+    /// </summary>
+    /// <param name="commandObject">Объект, который будет подписан на событие (если ещё не подписан). У этого объекта будет
+    /// вызываться метод ReturnToDefaultState</param>
+    public void SubscribingToAnEvent(ClickCommandObject commandObject)
+    {
+        if (!interactiveObjectsOnField.Contains(commandObject))
+        {
+            interactiveObjectsOnField.Add(commandObject);
+            EmptyClickEvent += commandObject.ReturnToDefaultState;
+        }
+    }
+    /// <summary>
+    /// Отписать передаваемый объект от события EmptyClick, которое вызывается, когда пользователь кликнул
+    /// мимо танцевальной площадки
+    /// </summary>
+    /// <param name="commandObject">Объект, который будет отписан от событие (если был подписан, иначе будет будет выдан Exception).</param>
+    public void UnsubscribingToAnEvent(ClickCommandObject commandObject)
+    {
+        if (interactiveObjectsOnField.Contains(commandObject))
+        {
+            interactiveObjectsOnField.Remove(commandObject);
+            EmptyClickEvent -= commandObject.ReturnToDefaultState;
+        }
+        else
+        {
+            throw new Exception(string.Format("Невозможно провести отписку! Объект {0} не найден " +
+                "в коллекции подписчиков на событие EmptyClick.",
+                commandObject.name));
+        }
+    }
+
+    private void OnDestroy()
+    {
+        EmptyClickEvent = null;
+    }
+
+    public override void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject)
+    {
+        if(this != commandObject)
+        {
+            ReturnToDefaultState();
+        }
     }
 }

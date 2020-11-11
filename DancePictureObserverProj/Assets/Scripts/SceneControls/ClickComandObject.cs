@@ -14,6 +14,10 @@ public abstract class ClickCommandObject : MonoBehaviour
 
     private void Start()
     {
+        if(menuController == null)
+        {
+            menuController = FindObjectOfType<ClickMenuController>();
+        }
         menuController.SubscribingToAnEvent(this);
         OnStartAction();
     }
@@ -32,6 +36,11 @@ public abstract class ClickCommandObject : MonoBehaviour
     /// Возврат объекта к состоянию, когда на него ещё не кликнули
     /// </summary>
     public abstract void ReturnToDefaultState();
+    /// <summary>
+    /// Возврат объекта к состоянию, когда на него ещё не кликнули, если это не тот объект, который передан в параметре
+    /// </summary>
+    /// <param name="menuController">Объект, который не будет возвращён к изначальному состоянию</param>
+    public abstract void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject);
 
     private void OnDestroy()
     {

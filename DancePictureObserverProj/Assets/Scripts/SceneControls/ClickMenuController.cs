@@ -6,7 +6,7 @@ using System;
 /// <summary>
 /// Данный класс используется для отслеживания кликов по интерактивным объектам и мимо них.
 /// </summary>
-public class ClickMenuController : MonoBehaviour
+public class ClickMenuController : MonoBehaviour, IEmptyClickEventSender
 {
     [SerializeField] private Camera cam = null;
     [SerializeField] private LayerMask ignoreMask = 0;
@@ -15,6 +15,10 @@ public class ClickMenuController : MonoBehaviour
     /// Данное событие вызывается, когда пользователь кликнул мимо танцевальной площадки любой кнопокй
     /// </summary>
     public event Action EmptyClickEvent;
+    /// <summary>
+    /// Данное событие вызывается, когда нужно перевести в изначальное состояние все объекты, кроме указанного
+    /// </summary>
+    public event Action<ClickCommandObject> EmptyClickEventExcludeObject;
 
     private List<ClickCommandObject> interactiveObjectsOnScene;
     private const float clickRayDistance = 50;
@@ -27,40 +31,6 @@ public class ClickMenuController : MonoBehaviour
     private void Update()
     {
         CheckClick();
-    }
-
-    /// <summary>
-    /// Подписать передаваемый объект на события EmptyClick, которое вызывается, когда пользователь кликнул
-    /// мимо танцевальной площадки
-    /// </summary>
-    /// <param name="commandObject">Объект, который будет подписан на событие (если ещё не подписан). У этого объекта будет
-    /// вызываться метод ReturnToDefaultState</param>
-    public void SubscribingToAnEvent(ClickCommandObject commandObject)
-    {
-        if(!interactiveObjectsOnScene.Contains(commandObject))
-        {
-            interactiveObjectsOnScene.Add(commandObject);
-            EmptyClickEvent += commandObject.ReturnToDefaultState;
-        }
-    }
-    /// <summary>
-    /// Отписать передаваемый объект от события EmptyClick, которое вызывается, когда пользователь кликнул
-    /// мимо танцевальной площадки
-    /// </summary>
-    /// <param name="commandObject">Объект, который будет отписан от событие (если был подписан, иначе будет будет выдан Exception).</param>
-    public void UnsubscribingToAnEvent(ClickCommandObject commandObject)
-    {
-        if (interactiveObjectsOnScene.Contains(commandObject))
-        {
-            interactiveObjectsOnScene.Remove(commandObject);
-            EmptyClickEvent -= commandObject.ReturnToDefaultState;
-        }
-        else
-        {
-            throw new Exception(string.Format("Невозможно провести отписку! Объект {0} не найден " +
-                "в коллекции подписчиков на событие EmptyClick.",
-                commandObject.name));
-        }
     }
 
     private void CheckClick()
@@ -106,6 +76,49 @@ public class ClickMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Подписать передаваемый объект на события EmptyClick, которое вызывается, когда пользователь кликнул
+    /// мимо танцевальной площадки
+    /// </summary>
+    /// <param name="commandObject">Объект, который будет подписан на событие (если ещё не подписан). У этого объекта будет
+    /// вызываться метод ReturnToDefaultState</param>
+    public void SubscribingToAnEvent(ClickCommandObject commandObject)
+    {
+        if (!interactiveObjectsOnScene.Contains(commandObject))
+        {
+            interactiveObjectsOnScene.Add(commandObject);
+            EmptyClickEvent += commandObject.ReturnToDefaultState;
+            EmptyClickEventExcludeObject += commandObject.ReturnToDefaultStateWithCheck;
+        }
+    }
+    /// <summary>
+    /// Отписать передаваемый объект от события EmptyClick, которое вызывается, когда пользователь кликнул
+    /// мимо танцевальной площадки
+    /// </summary>
+    /// <param name="commandObject">Объект, который будет отписан от событие (если был подписан, иначе будет будет выдан Exception).</param>
+    public void UnsubscribingToAnEvent(ClickCommandObject commandObject)
+    {
+        if (interactiveObjectsOnScene.Contains(commandObject))
+        {
+            interactiveObjectsOnScene.Remove(commandObject);
+            EmptyClickEvent -= commandObject.ReturnToDefaultState;
+            EmptyClickEventExcludeObject -= commandObject.ReturnToDefaultStateWithCheck;
+        }
+        else
+        {
+            throw new Exception(string.Format("Невозможно провести отписку! Объект {0} не найден " +
+                "в коллекции подписчиков на событие EmptyClick.",
+                commandObject.name));
+        }
+    }
+/// <summary>
+/// Перевести в изначальное состояние все объекты кроме указанного
+/// </summary>
+/// <param name="commandObject">исключаемый объект</param>
+    public void AllToDefaultExcludeThis(ClickCommandObject commandObject)
+    {
+        EmptyClickEventExcludeObject?.Invoke(commandObject);
+    }
     private void OnDestroy()
     {
         EmptyClickEvent = null;

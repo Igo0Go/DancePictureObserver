@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &88924902 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7008433923932787431, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
+    type: 3}
+  m_PrefabInstance: {fileID: 7689251747996460567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7ec57576f338b4b8a9557049f8ede9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &228668465
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,7 +1772,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 85456cc007acecd4ea311690957dd945, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -2171,6 +2183,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 349329508}
     m_Modifications:
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 88924902}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: InstanceActor
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3952867451644334013, guid: 7f53d07885708a443b843d8f2c8fadd5,
+        type: 3}
     - target: {fileID: 694543506411994023, guid: b11706d951ef4d44b9afe8b9953e3ac9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2634,6 +2682,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 667478068356174499, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7008433923932787431, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
         type: 3}
       propertyPath: actorsPanel
@@ -2644,6 +2697,11 @@ PrefabInstance:
       propertyPath: menuController
       value: 
       objectReference: {fileID: 519420030}
+    - target: {fileID: 7008433923932787431, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
+        type: 3}
+      propertyPath: danceField
+      value: 
+      objectReference: {fileID: 1790606145}
     - target: {fileID: 7563293773225756027, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2698,6 +2756,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7689251748462636132, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac5eeb87f02a64743a4eb03a9f87ce62, type: 3}
