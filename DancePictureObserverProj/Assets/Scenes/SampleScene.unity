@@ -1851,6 +1851,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 349329508}
     m_Modifications:
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 88924902}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: InstanceActor
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 195153344425597412, guid: b11706d951ef4d44b9afe8b9953e3ac9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 9076618715755358973, guid: e8cb20982f419624f87b811f12cce656,
+        type: 3}
     - target: {fileID: 694543506411994023, guid: b11706d951ef4d44b9afe8b9953e3ac9,
         type: 3}
       propertyPath: m_LocalPosition.x
