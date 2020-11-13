@@ -743,7 +743,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 926336825}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 88924902}
+        m_MethodName: InstanceActor
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3007759848994114559, guid: c76858e49de7ccc49abe79f7ee662e64,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &926336825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2153,7 +2165,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1685002934639310121}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 88924902}
+        m_MethodName: InstanceActor
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8882149213413763945, guid: 52e007260b3760e49a0ee90dd2eaeb9b,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &694543506573404795
 RectTransform:
   m_ObjectHideFlags: 0
