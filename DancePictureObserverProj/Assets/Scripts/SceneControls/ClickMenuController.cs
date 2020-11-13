@@ -9,7 +9,7 @@ using System;
 public class ClickMenuController : MonoBehaviour, IEmptyClickEventSender
 {
     [SerializeField] private Camera cam = null;
-    [SerializeField] private LayerMask ignoreMask = 0;
+    public LayerMask ignoreMask = 0;
 
     /// <summary>
     /// Данное событие вызывается, когда пользователь кликнул мимо танцевальной площадки любой кнопокй
@@ -21,7 +21,7 @@ public class ClickMenuController : MonoBehaviour, IEmptyClickEventSender
     public event Action<ClickCommandObject> EmptyClickEventExcludeObject;
 
     private List<ClickCommandObject> interactiveObjectsOnScene;
-    private const float clickRayDistance = 50;
+    [HideInInspector] public float clickRayDistance = 50;
 
     private void Awake()
     {
