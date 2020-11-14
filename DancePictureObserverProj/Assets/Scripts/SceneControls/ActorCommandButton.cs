@@ -1,24 +1,37 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class ActorCommandButton : ClickCommandObject
 {
     [SerializeField, Tooltip("UI-панель с элементами управления для выбора действия с исполнителем")]
     private GameObject actorMenu = null;
+    [SerializeField, Range(1, 300)]
+    private float rotateSpeed = 100;
+
+    [SerializeField]
+    private List<Transform> rotateOrigins = null;
 
     public Action<ActorCommandButton> ButtonCliccked;
 
+    private Transform actorMenuTransform;
     private LayerMask ignoreMask;
     private Camera cam;
     private Transform myTransform;
     private float clickRayDistance;
-    private bool moveKey;
     private bool inMenu;
-
+    private bool moveKey;
+    private bool rotateKey;
+    private int currentRotateOrigin;
 
     private void FixedUpdate()
     {
         Move();
+    }
+
+    private void Update()
+    {
+        Rotate();
     }
 
     /// <summary>
@@ -54,7 +67,7 @@ public class ActorCommandButton : ClickCommandObject
     /// </summary>
     public override void ReturnToDefaultState()
     {
-        moveKey = inMenu = false;
+        moveKey = rotateKey = inMenu = false;
         actorMenu.SetActive(false);
     }
 
@@ -66,15 +79,33 @@ public class ActorCommandButton : ClickCommandObject
         }
     }
 
+    public virtual void StartRotateAroundOrigin(int rotateOriginNumber)
+    {
+        currentRotateOrigin = rotateOriginNumber;
+        rotateKey = true;
+    }
+
     protected override void OnStartAction()
     {
         base.OnStartAction();
         cam = Camera.main;
         myTransform = transform;
+        actorMenuTransform = actorMenu.transform;
         if(cam.TryGetComponent<ClickMenuController>(out ClickMenuController clickMenuController))
         {
             clickRayDistance = clickMenuController.clickRayDistance;
             ignoreMask = clickMenuController.ignoreMask;
+        }
+    }
+
+    private void Rotate()
+    {
+        if(rotateKey)
+        {
+            float angle = -Mathf.Clamp(Input.GetAxis("Mouse X") + Input.GetAxis("Mouse Y"), -1,1) * rotateSpeed * Time.deltaTime;
+
+            myTransform.RotateAround(rotateOrigins[currentRotateOrigin].position, Vector3.forward,angle);
+            actorMenuTransform.Rotate(Vector3.forward, -angle);
         }
     }
 
