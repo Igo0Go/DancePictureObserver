@@ -1,18 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PairActorCommandButton : MonoBehaviour
+/// <summary>
+/// Класс исполнителя-пары
+/// </summary>
+public class PairActorCommandButton : ActorCommandButton
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Transform girlActor = null;
+    [SerializeField]
+    private Transform manActor = null;
+
+    [SerializeField]
+    private GameObject pairArmsDownIcon = null;
+    [SerializeField]
+    private GameObject pairArmsUpIcon = null;
+
+    /// <summary>
+    /// Поменять исполнителей в паре местами
+    /// </summary>
+    public void ChangePairActorsPositions()
     {
-        
+        girlActor.localPosition = new Vector3(girlActor.localPosition.x * -1, girlActor.localPosition.y, girlActor.localPosition.z);
+        manActor.localPosition = new Vector3(manActor.localPosition.x * -1, manActor.localPosition.y, manActor.localPosition.z);
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Подняь/опустить руки
+    /// </summary>
+    public void ChangePairArmsConfiguration()
     {
-        
+        pairArmsDownIcon.SetActive(!pairArmsDownIcon.activeSelf);
+        pairArmsUpIcon.SetActive(!pairArmsUpIcon.activeSelf);
     }
 }
