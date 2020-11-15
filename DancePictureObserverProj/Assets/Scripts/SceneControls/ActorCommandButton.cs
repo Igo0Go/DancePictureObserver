@@ -119,7 +119,7 @@ public class ActorCommandButton : ClickCommandObject
                            ~ignoreMask
                            );
 
-            myTransform.position = new Vector3(hit.point.x, hit.point.y, 0);
+            myTransform.position = new Vector3(hit.point.x, hit.point.y, -1);
         }
     }
 

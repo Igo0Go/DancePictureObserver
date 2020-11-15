@@ -45,7 +45,7 @@ public class CreateActorsCommandButton : ClickCommandObject
     public void InstanceActor(GameObject actor)
     {
         ActorCommandButton actorCommandButton = Instantiate(actor,
-            transform.parent.position,
+            transform.parent.position - Vector3.forward,
             Quaternion.identity).GetComponent<ActorCommandButton>();
         danceField.SubscribingToAnEvent(actorCommandButton);
         actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
