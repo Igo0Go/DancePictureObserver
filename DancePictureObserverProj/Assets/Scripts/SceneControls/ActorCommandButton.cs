@@ -81,7 +81,11 @@ public class ActorCommandButton : ClickCommandObject
 
     public virtual void StartRotateAroundOrigin(int rotateOriginNumber)
     {
+        rotateOrigins[currentRotateOrigin].parent = myTransform;
         currentRotateOrigin = rotateOriginNumber;
+        rotateOrigins[currentRotateOrigin].parent = null;
+        myTransform.parent = rotateOrigins[currentRotateOrigin];
+
         rotateKey = true;
     }
 
@@ -102,10 +106,16 @@ public class ActorCommandButton : ClickCommandObject
     {
         if(rotateKey)
         {
-            float angle = -Mathf.Clamp(Input.GetAxis("Mouse X") + Input.GetAxis("Mouse Y"), -1,1) * rotateSpeed * Time.deltaTime;
+            RaycastHit2D hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition),
+               Vector2.zero,
+               clickRayDistance,
+               ~ignoreMask
+               );
 
-            myTransform.RotateAround(rotateOrigins[currentRotateOrigin].position, Vector3.forward,angle);
-            actorMenuTransform.Rotate(Vector3.forward, -angle);
+            Vector2 dir = hit.point - new Vector2(rotateOrigins[currentRotateOrigin].position.x,
+                rotateOrigins[currentRotateOrigin].position.y);
+            rotateOrigins[currentRotateOrigin].up = dir;
+            actorMenuTransform.up = Vector2.up;
         }
     }
 
