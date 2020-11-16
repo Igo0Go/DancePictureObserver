@@ -443,6 +443,7 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 22
+  clickRayDistance: 50
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2775,7 +2776,7 @@ PrefabInstance:
     - target: {fileID: 7563293773225756027, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7563293773225756027, guid: ac5eeb87f02a64743a4eb03a9f87ce62,
         type: 3}
