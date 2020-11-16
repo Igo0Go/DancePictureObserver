@@ -49,6 +49,7 @@ public class CreateActorsCommandButton : ClickCommandObject
             Quaternion.identity).GetComponent<ActorCommandButton>();
         danceField.SubscribingToAnEvent(actorCommandButton);
         actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+        actorCommandButton.ObjectDeleted += danceField.UnsubscribingToAnEvent;
         ReturnToDefaultState();
     }
 

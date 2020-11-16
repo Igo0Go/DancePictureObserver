@@ -13,6 +13,7 @@ public class ActorCommandButton : ClickCommandObject
     private List<Transform> rotateOrigins = null;
 
     public Action<ActorCommandButton> ButtonCliccked;
+    public Action<ActorCommandButton> ObjectDeleted;
 
     private Transform actorMenuTransform;
     private LayerMask ignoreMask;
@@ -87,6 +88,12 @@ public class ActorCommandButton : ClickCommandObject
         myTransform.parent = rotateOrigins[currentRotateOrigin];
 
         rotateKey = true;
+    }
+
+    public void DeleteActor()
+    {
+        ObjectDeleted?.Invoke(this);
+        Destroy(gameObject);
     }
 
     protected override void OnStartAction()

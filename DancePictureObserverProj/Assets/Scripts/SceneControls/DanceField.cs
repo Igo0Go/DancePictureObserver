@@ -78,6 +78,10 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         {
             interactiveObjectsOnField.Remove(commandObject);
             EmptyClickEvent -= commandObject.ReturnToDefaultState;
+            if(commandObject is ActorCommandButton actorCommandButton)
+            {
+                actorCommandButton.ObjectDeleted -= UnsubscribingToAnEvent;
+            }
         }
         else
         {
