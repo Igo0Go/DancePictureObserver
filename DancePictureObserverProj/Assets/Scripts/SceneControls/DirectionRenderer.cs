@@ -10,8 +10,6 @@ public class DirectionRenderer : MonoBehaviour
 
     [SerializeField, Tooltip("Все опорные точки")]
     private List<ControllPoint> allPoints = null;
-    [SerializeField]
-    private List<GameObject> supportMarkers;
     [SerializeField, Range(4, 20), Tooltip("Количество сегментов кривой между опорными точками (гладкость)")]
     private int segmentsCount = 7;
 
@@ -33,6 +31,7 @@ public class DirectionRenderer : MonoBehaviour
     {
         line = GetComponent<LineRenderer>();
         currentControlPoints = new List<Transform>();
+        allPoints[1].point.gameObject.SetActive(false);
         SetActiveForPoint(0, true);
     }
 
@@ -81,7 +80,7 @@ public class DirectionRenderer : MonoBehaviour
         line.SetPosition(0, currentControlPoints[0].position);
 
         Vector3 p0 = currentControlPoints[0].position;
-        Vector3 p1 = myTransform.InverseTransformPoint(currentControlPoints[1].position);
+        Vector3 p1 = currentControlPoints[1].position;
         Vector3 p2 = currentControlPoints[2].position;
 
         for (int i = 1; i <= segmentsCount; i++)
@@ -96,8 +95,8 @@ public class DirectionRenderer : MonoBehaviour
         line.SetPosition(0, currentControlPoints[0].position);
 
         Vector3 p0 = currentControlPoints[0].position;
-        Vector3 p1 = myTransform.InverseTransformPoint(currentControlPoints[1].position);
-        Vector3 p2 = myTransform.InverseTransformPoint(currentControlPoints[2].position);
+        Vector3 p1 = currentControlPoints[1].position;
+        Vector3 p2 = currentControlPoints[2].position;
         Vector3 p3 = currentControlPoints[3].position;
 
         for (int i = 1; i <= segmentsCount * 2; i++)
@@ -136,9 +135,18 @@ public class DirectionRenderer : MonoBehaviour
     private void SetDirectionForPointer()
     {
         Vector3 dir = line.GetPosition(line.positionCount - 1) - line.GetPosition(line.positionCount - 2);
-        allPoints[allPoints.Count - 1].point.up = dir.normalized;
+        allPoints[allPoints.Count - 1].point.rotation = Quaternion.LookRotation(Vector3.forward, dir.normalized);
         dir = line.GetPosition(1) - line.GetPosition(0);
-        allPoints[0].point.up = dir.normalized;
+        allPoints[0].point.rotation = Quaternion.LookRotation(Vector3.forward, dir.normalized);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        for (int i = 1; i < currentControlPoints.Count; i++)
+        {
+            Gizmos.DrawLine(currentControlPoints[i - 1].position, currentControlPoints[i].position);
+        }
     }
 }
 

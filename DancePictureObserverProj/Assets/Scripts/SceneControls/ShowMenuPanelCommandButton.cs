@@ -78,7 +78,7 @@ public class ShowMenuPanelCommandButton : ClickCommandObject
             pointer.ObjectDeleted += danceField.UnsubscribingToAnEvent;
         }
 
-        directionCommandButton.pointers[2].transform.parent = null;
+        directionCommandButton.pointers[1].transform.parent = null;
 
         ReturnToDefaultState();
     }
