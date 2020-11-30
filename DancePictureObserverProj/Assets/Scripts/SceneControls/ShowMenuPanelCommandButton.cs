@@ -3,12 +3,15 @@
 /// <summary>
 /// Скрипт кнопки, отвечающей за добавление исполниелей на танцевальную площадку
 /// </summary>
-public class CreateActorsCommandButton : ClickCommandObject
+public class ShowMenuPanelCommandButton : ClickCommandObject
 {
-    [SerializeField, Tooltip("UI-панель с элементами управления для выбора типа добавляемого исполнителя")]
-    private GameObject actorsPanel = null;
+    [SerializeField, Tooltip("UI-панель с элементами управления для выбора типа добавляемого объекта")]
+    private GameObject menuPanel = null;
     [SerializeField, Tooltip("Ссылка на скрипт танцевальной площадки")]
     private DanceField danceField = null;
+    [SerializeField, Tooltip("Подсказка, которая будет высвечиваться при правом клике")]
+    private string tooltip;
+
 
     /// <summary>
     /// Команда, которая будет выполнена при клике левой кнопкой мыши.
@@ -17,7 +20,7 @@ public class CreateActorsCommandButton : ClickCommandObject
     /// <param name="clickPosition">позиция клика, которую можно использовать в команде</param>
     public override void OnLeftCkickCommand(Vector2 clickPosition)
     {
-        actorsPanel.SetActive(true);
+        menuPanel.SetActive(true);
     }
 
     /// <summary>
@@ -27,7 +30,7 @@ public class CreateActorsCommandButton : ClickCommandObject
     /// <param name="clickPosition">позиция клика, которую можно использовать в команде</param>
     public override void OnRightClickCommand(Vector2 clickPosition)
     {
-        Debug.Log("Эта кнопка позволит вам добавить исполнителей на сцену");
+        Debug.Log(tooltip);
     }
 
     /// <summary>
@@ -35,7 +38,7 @@ public class CreateActorsCommandButton : ClickCommandObject
     /// </summary>
     public override void ReturnToDefaultState()
     {
-        actorsPanel.SetActive(false);
+        menuPanel.SetActive(false);
     }
 
     /// <summary>
@@ -50,6 +53,33 @@ public class CreateActorsCommandButton : ClickCommandObject
         danceField.SubscribingToAnEvent(actorCommandButton);
         actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
         actorCommandButton.ObjectDeleted += danceField.UnsubscribingToAnEvent;
+        ReturnToDefaultState();
+    }
+
+    /// <summary>
+    /// Добавить перемеение на площадку
+    /// </summary>
+    /// <param name="actor">GameObject префаба</param>
+    public void InstanceDirection(GameObject directionPrefab)
+    {
+        DirectionOriginCommandButton directionCommandButton = Instantiate(directionPrefab,
+            transform.parent.position - Vector3.forward,
+            Quaternion.identity).GetComponent<DirectionOriginCommandButton>();
+
+        danceField.SubscribingToAnEvent(directionCommandButton);
+        directionCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+        directionCommandButton.ObjectDeleted += danceField.UnsubscribingToAnEvent;
+
+        foreach (var pointer in directionCommandButton.pointers)
+        {
+
+            danceField.SubscribingToAnEvent(pointer);
+            pointer.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+            pointer.ObjectDeleted += danceField.UnsubscribingToAnEvent;
+        }
+
+        directionCommandButton.pointers[2].transform.parent = null;
+
         ReturnToDefaultState();
     }
 

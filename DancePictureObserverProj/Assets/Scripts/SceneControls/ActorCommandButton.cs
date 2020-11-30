@@ -5,12 +5,10 @@ using System.Collections.Generic;
 public class ActorCommandButton : ClickCommandObject
 {
     [SerializeField, Tooltip("UI-панель с элементами управления для выбора действия с исполнителем")]
-    private GameObject actorMenu = null;
-    [SerializeField, Range(1, 300)]
-    private float rotateSpeed = 100;
+    protected GameObject actorMenu = null;
 
     [SerializeField]
-    private List<Transform> rotateOrigins = null;
+    protected List<Transform> rotateOrigins = null;
 
     public Action<ActorCommandButton> ButtonCliccked;
     public Action<ActorCommandButton> ObjectDeleted;
@@ -18,11 +16,11 @@ public class ActorCommandButton : ClickCommandObject
     private Transform actorMenuTransform;
     private LayerMask ignoreMask;
     private Camera cam;
-    private Transform myTransform;
+    protected Transform myTransform;
     private float clickRayDistance;
-    private bool inMenu;
-    private bool moveKey;
-    private bool rotateKey;
+    protected bool inMenu;
+    protected bool moveKey;
+    protected bool rotateKey;
     private int currentRotateOrigin;
 
     private void FixedUpdate()
@@ -70,6 +68,11 @@ public class ActorCommandButton : ClickCommandObject
     {
         moveKey = rotateKey = inMenu = false;
         actorMenu.SetActive(false);
+        myTransform.parent = null;
+        foreach (var item in rotateOrigins)
+        {
+            item.SetParent(myTransform);
+        }
     }
 
     public override void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject)
@@ -82,15 +85,16 @@ public class ActorCommandButton : ClickCommandObject
 
     public virtual void StartRotateAroundOrigin(int rotateOriginNumber)
     {
-        rotateOrigins[currentRotateOrigin].parent = myTransform;
+        var lastOrigin = rotateOrigins[currentRotateOrigin];
         currentRotateOrigin = rotateOriginNumber;
         rotateOrigins[currentRotateOrigin].parent = null;
-        myTransform.parent = rotateOrigins[currentRotateOrigin];
+        lastOrigin.SetParent(rotateOrigins[currentRotateOrigin]);
+        myTransform.SetParent(rotateOrigins[currentRotateOrigin]);
 
         rotateKey = true;
     }
 
-    public void DeleteActor()
+    public virtual void DeleteActor()
     {
         ObjectDeleted?.Invoke(this);
         Destroy(gameObject);
@@ -98,7 +102,6 @@ public class ActorCommandButton : ClickCommandObject
 
     protected override void OnStartAction()
     {
-        base.OnStartAction();
         cam = Camera.main;
         myTransform = transform;
         actorMenuTransform = actorMenu.transform;
@@ -107,6 +110,7 @@ public class ActorCommandButton : ClickCommandObject
             clickRayDistance = clickMenuController.clickRayDistance;
             ignoreMask = clickMenuController.ignoreMask;
         }
+        base.OnStartAction();
     }
 
     private void Rotate()
@@ -122,8 +126,13 @@ public class ActorCommandButton : ClickCommandObject
             Vector2 dir = hit.point - new Vector2(rotateOrigins[currentRotateOrigin].position.x,
                 rotateOrigins[currentRotateOrigin].position.y);
             rotateOrigins[currentRotateOrigin].up = dir;
-            actorMenuTransform.up = Vector2.up;
+            CheckMenuOrientation();
         }
+    }
+
+    protected virtual void CheckMenuOrientation()
+    {
+        actorMenuTransform.up = Vector2.up;
     }
 
     private void Move()
