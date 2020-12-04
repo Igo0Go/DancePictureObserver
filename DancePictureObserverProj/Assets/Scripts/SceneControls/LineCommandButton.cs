@@ -5,7 +5,7 @@ using UnityEngine;
 public class LineCommandButton : ActorCommandButton
 {
     [SerializeField]
-    private Transform iconBuferTransform = null;
+    private Transform actorsContainerTransform = null;
     [SerializeField]
     private SpriteRenderer lineSprite = null;
     [SerializeField]
@@ -17,20 +17,20 @@ public class LineCommandButton : ActorCommandButton
 
     public void AddActor(bool instanceGirl)
     {
-        int childCount = iconBuferTransform.childCount;
+        int childCount = actorsContainerTransform.childCount;
 
-        Vector3 newPos = childCount == 0 ? iconBuferTransform.position
-            : iconBuferTransform.GetChild(childCount - 1).position + Vector3.right;
+        Vector3 newPos = childCount == 0 ? actorsContainerTransform.position
+            : actorsContainerTransform.GetChild(childCount - 1).position + actorsContainerTransform.right;
 
         Instantiate(instanceGirl ? girlActor : manActor,
             newPos,
             Quaternion.identity,
-            iconBuferTransform);
+            actorsContainerTransform).transform.localRotation = Quaternion.Euler(Vector3.zero);
         if (childCount > 0)
         {
-            rotateOrigins[1].localPosition += rotateOrigins[1].right * 0.5f;
-            rotateOrigins[2].localPosition -= rotateOrigins[2].right * 0.5f;
-            iconBuferTransform.localPosition -= Vector3.right * 0.5f;
+            rotateOrigins[1].position += rotateOrigins[1].right * 0.5f;
+            rotateOrigins[2].position -= rotateOrigins[2].right * 0.5f;
+            actorsContainerTransform.localPosition -= Vector3.right *0.5f;
         }
         lineSprite.size += Vector2.right;
         removeActorButton.SetActive(true);
@@ -38,15 +38,23 @@ public class LineCommandButton : ActorCommandButton
 
     public void RemoveActor()
     {
-        int childCount = iconBuferTransform.childCount - 1;
+        int childCount = actorsContainerTransform.childCount - 1;
         if(childCount == 0)
         {
             removeActorButton.SetActive(false);
+            actorsContainerTransform.localPosition += Vector3.zero;
+            rotateOrigins[1].localPosition = Vector3.right;
+            rotateOrigins[2].localPosition = Vector3.left;
         }
-        rotateOrigins[1].localPosition -= rotateOrigins[1].right * 0.5f;
-        rotateOrigins[2].localPosition += rotateOrigins[2].right * 0.5f;
-        Destroy(iconBuferTransform.GetChild(childCount).gameObject);
-        iconBuferTransform.localPosition += Vector3.right * 0.5f;
+        else
+        {
+            actorsContainerTransform.localPosition += Vector3.right * 0.5f;
+            rotateOrigins[1].position -= rotateOrigins[1].right * 0.5f;
+            rotateOrigins[2].position += rotateOrigins[2].right * 0.5f;
+        }
+
+        Destroy(actorsContainerTransform.GetChild(childCount).gameObject);
+        
         lineSprite.size -= Vector2.right;
     }
 

@@ -49,7 +49,7 @@ public class ShowMenuPanelCommandButton : ClickCommandObject
     {
         ActorCommandButton actorCommandButton = Instantiate(actor,
             transform.parent.position - Vector3.forward,
-            Quaternion.identity).GetComponent<ActorCommandButton>();
+            Quaternion.Euler(0,0,180)).GetComponent<ActorCommandButton>();
         danceField.SubscribingToAnEvent(actorCommandButton);
         actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
         actorCommandButton.ObjectDeleted += danceField.UnsubscribingToAnEvent;

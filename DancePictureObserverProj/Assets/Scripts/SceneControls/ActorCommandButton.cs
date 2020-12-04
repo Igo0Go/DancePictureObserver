@@ -111,6 +111,7 @@ public class ActorCommandButton : ClickCommandObject
             ignoreMask = clickMenuController.ignoreMask;
         }
         base.OnStartAction();
+        CheckMenuOrientation();
     }
 
     private void Rotate()
@@ -151,7 +152,9 @@ public class ActorCommandButton : ClickCommandObject
 
     private void OnDestroy()
     {
-        menuController.UnsubscribingToAnEvent(this);
-        ButtonCliccked += menuController.AllToDefaultExcludeThis;
+            menuController.UnsubscribingToAnEvent(this);
+            ButtonCliccked += menuController.AllToDefaultExcludeThis;
     }
+
+
 }

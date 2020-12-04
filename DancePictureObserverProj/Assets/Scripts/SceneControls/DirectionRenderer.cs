@@ -24,7 +24,7 @@ public class DirectionRenderer : MonoBehaviour
     {
         checkCurve = false;
         myTransform = transform;
-        Prepare();
+        Invoke("Prepare", Time.deltaTime);
     }
 
     public void Prepare()
