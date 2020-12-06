@@ -15,8 +15,12 @@ public class LineCommandButton : ActorCommandButton
     [SerializeField]
     private GameObject removeActorButton = null;
 
+    private string lineCode = string.Empty;
+
     public void AddActor(bool instanceGirl)
     {
+        lineCode += instanceGirl ? "g" : "b";
+
         int childCount = actorsContainerTransform.childCount;
 
         Vector3 newPos = childCount == 0 ? actorsContainerTransform.position
@@ -38,6 +42,8 @@ public class LineCommandButton : ActorCommandButton
 
     public void RemoveActor()
     {
+        lineCode = lineCode.Substring(0, lineCode.Length - 1);
+
         int childCount = actorsContainerTransform.childCount - 1;
         if(childCount == 0)
         {
@@ -65,5 +71,20 @@ public class LineCommandButton : ActorCommandButton
         {
             actorMenu.transform.GetChild(i).up = Vector2.up;
         }
+    }
+
+    public override void SetOptions(ActorJSONHolder holder)
+    {
+        base.SetOptions(holder);
+        char[] code = holder.actorsInLine.ToCharArray();
+        for (int i = 0; i < code.Length; i++)
+        {
+            AddActor(code[i] == 'g');
+        }
+    }
+
+    public override ActorJSONHolder GetHolder()
+    {
+        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation, lineCode);
     }
 }

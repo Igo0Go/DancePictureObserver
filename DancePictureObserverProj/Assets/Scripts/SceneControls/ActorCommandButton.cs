@@ -6,9 +6,11 @@ public class ActorCommandButton : ClickCommandObject
 {
     [SerializeField, Tooltip("UI-панель с элементами управления для выбора действия с исполнителем")]
     protected GameObject actorMenu = null;
-
+    [SerializeField]
+    protected InstanceType type = InstanceType.ManActor;
     [SerializeField]
     protected List<Transform> rotateOrigins = null;
+
 
     public Action<ActorCommandButton> ButtonCliccked;
     public Action<ActorCommandButton> ObjectDeleted;
@@ -114,6 +116,11 @@ public class ActorCommandButton : ClickCommandObject
         CheckMenuOrientation();
     }
 
+    public virtual ActorJSONHolder GetHolder()
+    {
+        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation);
+    }
+
     private void Rotate()
     {
         if(rotateKey)
@@ -150,11 +157,52 @@ public class ActorCommandButton : ClickCommandObject
         }
     }
 
+    public virtual void SetOptions(ActorJSONHolder holder)
+    {
+        transform.position = holder.actorPosition;
+        transform.rotation = Quaternion.Euler(holder.actorRotation);
+    }
+
     private void OnDestroy()
     {
             menuController.UnsubscribingToAnEvent(this);
             ButtonCliccked += menuController.AllToDefaultExcludeThis;
     }
+}
 
+[Serializable]
+public class ActorJSONHolder
+{
+    public InstanceType actorType;
+    public Vector3 actorPosition;
+    public Vector3 actorRotation;
 
+    public ActorJSONHolder(InstanceType type, Vector3 position, Quaternion rotation)
+    {
+        actorType = type;
+        actorPosition = position;
+        actorRotation = rotation.eulerAngles;
+    }
+
+    public bool actorsPostionsnChanged;
+    public bool actorsArmsChanged;
+
+    public ActorJSONHolder(InstanceType type, Vector3 position, Quaternion rotation, bool positionsStatus, bool armsStatus)
+    {
+        actorType = type;
+        actorPosition = position;
+        actorRotation = rotation.eulerAngles;
+        actorsArmsChanged = armsStatus;
+        actorsPostionsnChanged = positionsStatus;
+    }
+
+    public string actorsInLine;
+
+    public ActorJSONHolder(InstanceType type, Vector3 position, Quaternion rotation, string lineActors)
+    {
+        actorType = type;
+        actorPosition = position;
+        actorRotation = rotation.eulerAngles;
+        actorsInLine = lineActors;
+    }
 }

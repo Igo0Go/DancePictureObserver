@@ -98,6 +98,11 @@ PrefabInstance:
       propertyPath: rotateOrigins.Array.data[0]
       value: 
       objectReference: {fileID: 3162858462496057285}
+    - target: {fileID: 3952867451644334012, guid: 7f53d07885708a443b843d8f2c8fadd5,
+        type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3952867451644334013, guid: 7f53d07885708a443b843d8f2c8fadd5,
         type: 3}
       propertyPath: m_Name

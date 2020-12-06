@@ -47,12 +47,7 @@ public class ShowMenuPanelCommandButton : ClickCommandObject
     /// <param name="actor">GameObject префаба</param>
     public void InstanceActor(GameObject actor)
     {
-        ActorCommandButton actorCommandButton = Instantiate(actor,
-            transform.parent.position - Vector3.forward,
-            Quaternion.Euler(0,0,180)).GetComponent<ActorCommandButton>();
-        danceField.SubscribingToAnEvent(actorCommandButton);
-        actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
-        actorCommandButton.ObjectDeleted += danceField.UnsubscribingToAnEvent;
+        danceField.InstanceActor(actor, transform.parent.position - Vector3.forward);
         ReturnToDefaultState();
     }
 
@@ -62,25 +57,7 @@ public class ShowMenuPanelCommandButton : ClickCommandObject
     /// <param name="actor">GameObject префаба</param>
     public void InstanceDirection(GameObject directionPrefab)
     {
-        DirectionOriginCommandButton directionCommandButton = Instantiate(directionPrefab,
-            transform.parent.position - Vector3.forward,
-            Quaternion.identity).GetComponent<DirectionOriginCommandButton>();
-
-        danceField.SubscribingToAnEvent(directionCommandButton);
-        directionCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
-        directionCommandButton.ObjectDeleted += danceField.UnsubscribingToAnEvent;
-
-        foreach (var pointer in directionCommandButton.pointers)
-        {
-
-            danceField.SubscribingToAnEvent(pointer);
-            pointer.ButtonCliccked += menuController.AllToDefaultExcludeThis;
-            pointer.ObjectDeleted += danceField.UnsubscribingToAnEvent;
-        }
-
-        directionCommandButton.pointers[1].transform.parent = null;
-
-        ReturnToDefaultState();
+        danceField.InstanceDirection(directionPrefab);
     }
 
     public override void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject)

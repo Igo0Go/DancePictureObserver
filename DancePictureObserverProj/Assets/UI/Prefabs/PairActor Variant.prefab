@@ -1413,6 +1413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuController: {fileID: 0}
   actorMenu: {fileID: 8882149211788476806}
+  type: 2
   rotateOrigins:
   - {fileID: 8882149213413763957}
   - {fileID: 4588300788392063026}

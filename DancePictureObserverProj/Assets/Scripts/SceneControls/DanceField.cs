@@ -9,6 +9,8 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
 {
     [SerializeField] private GameObject menuObj = null;
 
+    [SerializeField] private List<GameObject> instancePrefabs;
+
     private List<ClickCommandObject> interactiveObjectsOnField;
 
 
@@ -91,6 +93,65 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         }
     }
 
+    /// <summary>
+    /// Добавить исполнител на площадку
+    /// </summary>
+    /// <param name="actor">GameObject префаба</param>
+    public void InstanceActor(GameObject actor, Vector3 pos)
+    {
+        ActorCommandButton actorCommandButton = Instantiate(actor,
+            pos,
+            Quaternion.Euler(0, 0, 180)).GetComponent<ActorCommandButton>();
+        SubscribingToAnEvent(actorCommandButton);
+        actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+        actorCommandButton.ObjectDeleted += UnsubscribingToAnEvent;
+        ReturnToDefaultState();
+    }
+
+    /// <summary>
+    /// Добавить перемеение на площадку
+    /// </summary>
+    /// <param name="actor">GameObject префаба</param>
+    public void InstanceDirection(GameObject directionPrefab)
+    {
+        DirectionOriginCommandButton directionCommandButton = Instantiate(directionPrefab,
+            transform.parent.position - Vector3.forward,
+            Quaternion.identity).GetComponent<DirectionOriginCommandButton>();
+
+        SubscribingToAnEvent(directionCommandButton);
+        directionCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+        directionCommandButton.ObjectDeleted += UnsubscribingToAnEvent;
+
+        foreach (var pointer in directionCommandButton.pointers)
+        {
+
+            SubscribingToAnEvent(pointer);
+            pointer.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+            pointer.ObjectDeleted += UnsubscribingToAnEvent;
+        }
+
+        directionCommandButton.pointers[1].transform.parent = null;
+
+        ReturnToDefaultState();
+    }
+
+    /// <summary>
+    /// Добавить исполнител на площадку
+    /// </summary>
+    /// <param name="actor">GameObject префаба</param>
+    private void InstanceActor(ActorJSONHolder holder)
+    {
+        ActorCommandButton actorCommandButton = Instantiate(instancePrefabs[(int)(holder.actorType)],
+            Vector3.zero,
+            Quaternion.Euler(0, 0, 180)).GetComponent<ActorCommandButton>();
+        SubscribingToAnEvent(actorCommandButton);
+        actorCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+        actorCommandButton.ObjectDeleted += UnsubscribingToAnEvent;
+        ReturnToDefaultState();
+        actorCommandButton.SetOptions(holder);
+    }
+
+
     private void OnDestroy()
     {
         EmptyClickEvent = null;
@@ -101,6 +162,39 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         if(this != commandObject)
         {
             ReturnToDefaultState();
+        }
+    }
+
+    public List<ActorJSONHolder> GetHoldersOnField()
+    {
+        List<ActorJSONHolder> result = new List<ActorJSONHolder>();
+
+        foreach (var item in interactiveObjectsOnField)
+        {
+            if(item.TryGetComponent<ActorCommandButton>(out ActorCommandButton actor))
+            {
+                result.Add(actor.GetHolder());
+            }
+        }
+
+        return result;
+    }
+
+    public void InstenceActorsWithSettings(List<ActorJSONHolder> holders)
+    {
+        for (int i = 0; i < interactiveObjectsOnField.Count; i++)
+        {
+            ActorCommandButton bufer;
+            if(interactiveObjectsOnField[i].TryGetComponent<ActorCommandButton>(out bufer))
+            {
+                bufer.DeleteActor();
+                i--;
+            }
+        }
+
+        foreach (var item in holders)
+        {
+            InstanceActor(item);
         }
     }
 }
