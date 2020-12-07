@@ -2807,6 +2807,8 @@ MonoBehaviour:
   - {fileID: 9076618715755358973, guid: e8cb20982f419624f87b811f12cce656, type: 3}
   - {fileID: 8882149213413763945, guid: 52e007260b3760e49a0ee90dd2eaeb9b, type: 3}
   - {fileID: 3007759848994114559, guid: c76858e49de7ccc49abe79f7ee662e64, type: 3}
+  - {fileID: 7052008473767425947, guid: 28db609e631e15d42b99ffa0829375b2, type: 3}
+  - {fileID: 2962213877848638223, guid: 89541b81dbc12614393095f0d2bc0cae, type: 3}
 --- !u!1001 &1798086500
 PrefabInstance:
   m_ObjectHideFlags: 0

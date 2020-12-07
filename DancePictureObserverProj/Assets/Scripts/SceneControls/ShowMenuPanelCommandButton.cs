@@ -58,6 +58,7 @@ public class ShowMenuPanelCommandButton : ClickCommandObject
     public void InstanceDirection(GameObject directionPrefab)
     {
         danceField.InstanceDirection(directionPrefab);
+        ReturnToDefaultState();
     }
 
     public override void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject)

@@ -205,4 +205,26 @@ public class ActorJSONHolder
         actorRotation = rotation.eulerAngles;
         actorsInLine = lineActors;
     }
+
+
+    public bool supportPoint;
+    public bool supportPointVisible;
+    public Vector3 point2Pos;
+    public Vector3 point2Rot;
+    public Vector3 point3Pos;
+    public Vector3 point3Rot;
+
+    public ActorJSONHolder(InstanceType type, Vector3 position, Quaternion rotation, bool usePoint, bool visiblePoint,
+        Vector3 pos2, Quaternion rot2, Vector3 pos3, Quaternion rot3)
+    {
+        actorType = type;
+        actorPosition = position;
+        actorRotation = rotation.eulerAngles;
+        supportPoint = usePoint;
+        supportPointVisible = visiblePoint;
+        point2Pos = pos2;
+        point2Rot = rot2.eulerAngles;
+        point3Pos = pos3;
+        point3Rot = rot3.eulerAngles;
+    }
 }

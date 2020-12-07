@@ -66,6 +66,7 @@ public class DirectionRenderer : MonoBehaviour
         }
     }
 
+    public void RedrawLine() => renderMethod();
 
     private void DrawSimpleLine()
     {
@@ -140,6 +141,7 @@ public class DirectionRenderer : MonoBehaviour
         allPoints[0].point.rotation = Quaternion.LookRotation(Vector3.forward, dir.normalized);
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -148,6 +150,7 @@ public class DirectionRenderer : MonoBehaviour
             Gizmos.DrawLine(currentControlPoints[i - 1].position, currentControlPoints[i].position);
         }
     }
+#endif
 }
 
 [System.Serializable]

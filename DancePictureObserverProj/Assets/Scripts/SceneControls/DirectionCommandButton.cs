@@ -37,4 +37,15 @@ public class DirectionCommandButton : ActorCommandButton
         base.StartRotateAroundOrigin(rotateOriginNumber);
         directionRenderer.checkCurve = rotateKey;
     }
+
+    public override ActorJSONHolder GetHolder()
+    {
+        return null;
+    }
+
+    public void SetTransformSettings(Vector3 pos, Vector3 rot)
+    {
+        transform.position = pos;
+        transform.rotation = Quaternion.Euler(rot);
+    }
 }

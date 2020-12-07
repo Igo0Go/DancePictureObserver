@@ -115,7 +115,7 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
     public void InstanceDirection(GameObject directionPrefab)
     {
         DirectionOriginCommandButton directionCommandButton = Instantiate(directionPrefab,
-            transform.parent.position - Vector3.forward,
+            Vector3.zero - Vector3.forward,
             Quaternion.identity).GetComponent<DirectionOriginCommandButton>();
 
         SubscribingToAnEvent(directionCommandButton);
@@ -151,6 +151,46 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         actorCommandButton.SetOptions(holder);
     }
 
+    /// <summary>
+    /// Добавить перемеение на площадку
+    /// </summary>
+    /// <param name="actor">GameObject префаба</param>
+    public void InstanceDirection(ActorJSONHolder holder)
+    {
+        GameObject prefab;
+
+        if(holder.actorType == InstanceType.SimpleDirection)
+        {
+            prefab = instancePrefabs[4];
+        }
+        else
+        {
+            prefab = instancePrefabs[5];
+        }
+
+        DirectionOriginCommandButton directionCommandButton = Instantiate(prefab,
+            Vector3.zero - Vector3.forward,
+            Quaternion.identity).GetComponent<DirectionOriginCommandButton>();
+
+        SubscribingToAnEvent(directionCommandButton);
+        directionCommandButton.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+        directionCommandButton.ObjectDeleted += UnsubscribingToAnEvent;
+
+        foreach (var pointer in directionCommandButton.pointers)
+        {
+
+            SubscribingToAnEvent(pointer);
+            pointer.ButtonCliccked += menuController.AllToDefaultExcludeThis;
+            pointer.ObjectDeleted += UnsubscribingToAnEvent;
+        }
+
+        directionCommandButton.pointers[1].transform.parent = null;
+
+        ReturnToDefaultState();
+
+        directionCommandButton.SetOptions(holder);
+    }
+
 
     private void OnDestroy()
     {
@@ -173,7 +213,11 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         {
             if(item.TryGetComponent<ActorCommandButton>(out ActorCommandButton actor))
             {
-                result.Add(actor.GetHolder());
+                ActorJSONHolder holder = actor.GetHolder();
+                if(holder != null)
+                {
+                    result.Add(holder);
+                }
             }
         }
 
@@ -194,7 +238,14 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
 
         foreach (var item in holders)
         {
-            InstanceActor(item);
+            if(item.actorType == InstanceType.SimpleDirection || item.actorType == InstanceType.SimpleDirection)
+            {
+                InstanceDirection(item);
+            }
+            else
+            {
+                InstanceActor(item);
+            }
         }
     }
 }

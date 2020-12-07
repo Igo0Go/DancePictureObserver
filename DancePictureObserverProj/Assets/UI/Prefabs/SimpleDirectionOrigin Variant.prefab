@@ -146,7 +146,12 @@ PrefabInstance:
     - target: {fileID: 7052008473767425947, guid: 28db609e631e15d42b99ffa0829375b2,
         type: 3}
       propertyPath: m_Name
-      value: SimpleDirectionOrigin
+      value: SimpleDirectionOrigin Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8781706457211216891, guid: 28db609e631e15d42b99ffa0829375b2,
+        type: 3}
+      propertyPath: type
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28db609e631e15d42b99ffa0829375b2, type: 3}
