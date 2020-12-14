@@ -38,14 +38,14 @@ public class DirectionCommandButton : ActorCommandButton
         directionRenderer.checkCurve = rotateKey;
     }
 
-    public override ActorJSONHolder GetHolder()
+    public override string GetSaveString()
     {
         return null;
     }
 
-    public void SetTransformSettings(Vector3 pos, Vector3 rot)
+    public void SetTransformSettings(Vector3 pos, Quaternion rot)
     {
         transform.position = pos;
-        transform.rotation = Quaternion.Euler(rot);
+        transform.rotation = rot;
     }
 }

@@ -38,22 +38,27 @@ public class PairActorCommandButton : ActorCommandButton
         pairArmsUpIcon.SetActive(!pairArmsUpIcon.activeSelf);
     }
 
-    public override void SetOptions(ActorJSONHolder holder)
+    public override string GetSaveString()
     {
-        base.SetOptions(holder);
-        if(holder.actorsPostionsnChanged)
+        return ActorJSONHolder.GetPairActorJSONString(type, myTransform.position, myTransform.rotation, actorsChanged, armsChanged);
+    }
+
+    public override void SetOptions(string data)
+    {
+        var options = ActorJSONHolder.GetOptionsForPairActor(data);
+
+        transform.position = options.position;
+        transform.rotation = options.rotation;
+
+        if (options.positionsStatus)
         {
             ChangePairActorsPositions();
         }
-        if (holder.actorsArmsChanged)
+        if (options.armsStatus)
         {
             ChangePairArmsConfiguration();
         }
-    }
 
-    public override ActorJSONHolder GetHolder()
-    {
-        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation, actorsChanged, armsChanged);
     }
 }
 

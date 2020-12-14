@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class FileReaderModule : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public class FileReaderModule : MonoBehaviour
             File.Create(path);
         }
 
-        string content = JsonHelper.ToJson<ActorJSONHolder>(field.GetHoldersOnField().ToArray());
+        string content = string.Join("#", field.GetSaveStringsOnField().ToArray());
 
         File.WriteAllText(path, content);
 
@@ -41,9 +41,12 @@ public class FileReaderModule : MonoBehaviour
 
     public void Load()
     {
+        char[] separator = { '#' };
+
         string path = Path.Combine(saveFilesDirectory, "test.json");
         string content = File.ReadAllText(path);
-        List<ActorJSONHolder> result = new List<ActorJSONHolder>(JsonHelper.FromJson<ActorJSONHolder>(content));
+
+        List<string> result = new List<string>(content.Split(separator, StringSplitOptions.RemoveEmptyEntries));
         field.InstenceActorsWithSettings(result);
     }
 }

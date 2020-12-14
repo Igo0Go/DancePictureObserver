@@ -73,18 +73,22 @@ public class LineCommandButton : ActorCommandButton
         }
     }
 
-    public override void SetOptions(ActorJSONHolder holder)
+    public override string GetSaveString()
     {
-        base.SetOptions(holder);
-        char[] code = holder.actorsInLine.ToCharArray();
+        return ActorJSONHolder.GetLineActorJSONString(type, myTransform.position, myTransform.rotation, lineCode);
+    }
+
+    public override void SetOptions(string data)
+    {
+        var options = ActorJSONHolder.GetOptionsForLineActor(data);
+
+        transform.position = options.position;
+        transform.rotation = options.rotation;
+
+        char[] code = options.lineActors.ToCharArray();
         for (int i = 0; i < code.Length; i++)
         {
             AddActor(code[i] == 'g');
         }
-    }
-
-    public override ActorJSONHolder GetHolder()
-    {
-        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation, lineCode);
     }
 }

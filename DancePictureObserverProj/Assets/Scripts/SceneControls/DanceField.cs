@@ -142,18 +142,22 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         }
     }
 
-    public List<ActorJSONHolder> GetHoldersOnField()
+    /// <summary>
+    /// Собирает данные для сохранения со всех интерактивных элементов, размещённых в сцене, в формате строк
+    /// </summary>
+    /// <returns>Список строк с сохранёнными данными</returns>
+    public List<string> GetSaveStringsOnField()
     {
-        List<ActorJSONHolder> result = new List<ActorJSONHolder>();
+        List<string> result = new List<string>();
 
         foreach (var item in interactiveObjectsOnField)
         {
-            if (item.TryGetComponent<ActorCommandButton>(out ActorCommandButton actor))
+            if (item.TryGetComponent(out ActorCommandButton actor))
             {
-                ActorJSONHolder holder = actor.GetHolder();
-                if (holder != null)
+                string saveData = actor.GetSaveString();
+                if (saveData != null)
                 {
-                    result.Add(holder);
+                    result.Add(saveData);
                 }
             }
         }
@@ -161,27 +165,29 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         return result;
     }
 
-    public void InstenceActorsWithSettings(List<ActorJSONHolder> holders)
+    public void InstenceActorsWithSettings(List<string> data)
     {
         for (int i = 0; i < interactiveObjectsOnField.Count; i++)
         {
             ActorCommandButton bufer;
-            if (interactiveObjectsOnField[i].TryGetComponent<ActorCommandButton>(out bufer))
+            if (interactiveObjectsOnField[i].TryGetComponent(out bufer))
             {
                 bufer.DeleteActor();
                 i--;
             }
         }
 
-        foreach (var item in holders)
+        foreach (var item in data)
         {
-            if (item.actorType == InstanceType.SimpleDirection || item.actorType == InstanceType.SimpleDirection)
+            var type = ActorJSONHolder.GetElementType(item);
+
+            if (type == InstanceType.SimpleDirection || type == InstanceType.SimpleDirection)
             {
-                InstanceDirection(item);
+                InstanceDirection(item, type);
             }
             else
             {
-                InstanceActor(item);
+                InstanceActor(item, type);
             }
         }
     }
@@ -190,9 +196,9 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
     /// Добавить исполнител на площадку
     /// </summary>
     /// <param name="actor">GameObject префаба</param>
-    private void InstanceActor(ActorJSONHolder holder)
+    private void InstanceActor(string holder, InstanceType type)
     {
-        ActorCommandButton actorCommandButton = Instantiate(instancePrefabs[(int)(holder.actorType)],
+        ActorCommandButton actorCommandButton = Instantiate(instancePrefabs[(int)(type)],
             Vector3.zero,
             Quaternion.Euler(0, 0, 180)).GetComponent<ActorCommandButton>();
         SubscribingToAnEvent(actorCommandButton);
@@ -206,11 +212,11 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
     /// Добавить перемеение на площадку
     /// </summary>
     /// <param name="actor">GameObject префаба</param>
-    private void InstanceDirection(ActorJSONHolder holder)
+    private void InstanceDirection(string holder, InstanceType type)
     {
         GameObject prefab;
 
-        if(holder.actorType == InstanceType.SimpleDirection)
+        if(type == InstanceType.SimpleDirection)
         {
             prefab = instancePrefabs[4];
         }

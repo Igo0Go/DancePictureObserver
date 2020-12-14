@@ -76,36 +76,38 @@ public class DirectionOriginCommandButton : DirectionCommandButton
     }
 
 
-    public override ActorJSONHolder GetHolder()
+    public override string GetSaveString()
     {
-        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation, usePoint, useMarker,
+        return ActorJSONHolder.GetDirectionJSONString(type, myTransform.position, myTransform.rotation, usePoint, useMarker,
             pointers[0].transform.position, pointers[0].transform.rotation,
             pointers[1].transform.position, pointers[1].transform.rotation);
     }
 
-    public override void SetOptions(ActorJSONHolder holder)
+    public override void SetOptions(string data)
     {
-        StartCoroutine(SetOptionCoroutine(holder));
+        StartCoroutine(SetOptionCoroutine(data));
     }
 
-    private IEnumerator SetOptionCoroutine(ActorJSONHolder holder)
+    private IEnumerator SetOptionCoroutine(string data)
     {
-        transform.position = holder.actorPosition;
-        transform.rotation = Quaternion.Euler(holder.actorRotation);
+        var options = ActorJSONHolder.GetOptionsForDirection(data);
+
+        transform.position = options.position;
+        transform.rotation = options.rotation;
 
         yield return new WaitForSeconds(0.05f);
 
-        if (holder.supportPoint)
+        if (options.usePoint)
         {
             AddPoint();
         }
-        if (holder.supportPointVisible)
+        if (options.visiblePoint)
         {
             AddMarker();
         }
 
-        pointers[0].SetTransformSettings(holder.point2Pos, holder.point2Rot);
-        pointers[1].SetTransformSettings(holder.point3Pos, holder.point3Rot);
+        pointers[0].SetTransformSettings(options.pos2, options.rot2);
+        pointers[1].SetTransformSettings(options.pos3, options.rot3);
 
         directionRenderer.RedrawLine();
     }
