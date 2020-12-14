@@ -107,7 +107,6 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         actorCommandButton.ObjectDeleted += UnsubscribingToAnEvent;
         ReturnToDefaultState();
     }
-
     /// <summary>
     /// Добавить перемеение на площадку
     /// </summary>
@@ -135,6 +134,58 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
         ReturnToDefaultState();
     }
 
+    public override void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject)
+    {
+        if (this != commandObject)
+        {
+            ReturnToDefaultState();
+        }
+    }
+
+    public List<ActorJSONHolder> GetHoldersOnField()
+    {
+        List<ActorJSONHolder> result = new List<ActorJSONHolder>();
+
+        foreach (var item in interactiveObjectsOnField)
+        {
+            if (item.TryGetComponent<ActorCommandButton>(out ActorCommandButton actor))
+            {
+                ActorJSONHolder holder = actor.GetHolder();
+                if (holder != null)
+                {
+                    result.Add(holder);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public void InstenceActorsWithSettings(List<ActorJSONHolder> holders)
+    {
+        for (int i = 0; i < interactiveObjectsOnField.Count; i++)
+        {
+            ActorCommandButton bufer;
+            if (interactiveObjectsOnField[i].TryGetComponent<ActorCommandButton>(out bufer))
+            {
+                bufer.DeleteActor();
+                i--;
+            }
+        }
+
+        foreach (var item in holders)
+        {
+            if (item.actorType == InstanceType.SimpleDirection || item.actorType == InstanceType.SimpleDirection)
+            {
+                InstanceDirection(item);
+            }
+            else
+            {
+                InstanceActor(item);
+            }
+        }
+    }
+
     /// <summary>
     /// Добавить исполнител на площадку
     /// </summary>
@@ -155,7 +206,7 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
     /// Добавить перемеение на площадку
     /// </summary>
     /// <param name="actor">GameObject префаба</param>
-    public void InstanceDirection(ActorJSONHolder holder)
+    private void InstanceDirection(ActorJSONHolder holder)
     {
         GameObject prefab;
 
@@ -195,57 +246,5 @@ public class DanceField : ClickCommandObject, IEmptyClickEventSender
     private void OnDestroy()
     {
         EmptyClickEvent = null;
-    }
-
-    public override void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject)
-    {
-        if(this != commandObject)
-        {
-            ReturnToDefaultState();
-        }
-    }
-
-    public List<ActorJSONHolder> GetHoldersOnField()
-    {
-        List<ActorJSONHolder> result = new List<ActorJSONHolder>();
-
-        foreach (var item in interactiveObjectsOnField)
-        {
-            if(item.TryGetComponent<ActorCommandButton>(out ActorCommandButton actor))
-            {
-                ActorJSONHolder holder = actor.GetHolder();
-                if(holder != null)
-                {
-                    result.Add(holder);
-                }
-            }
-        }
-
-        return result;
-    }
-
-    public void InstenceActorsWithSettings(List<ActorJSONHolder> holders)
-    {
-        for (int i = 0; i < interactiveObjectsOnField.Count; i++)
-        {
-            ActorCommandButton bufer;
-            if(interactiveObjectsOnField[i].TryGetComponent<ActorCommandButton>(out bufer))
-            {
-                bufer.DeleteActor();
-                i--;
-            }
-        }
-
-        foreach (var item in holders)
-        {
-            if(item.actorType == InstanceType.SimpleDirection || item.actorType == InstanceType.SimpleDirection)
-            {
-                InstanceDirection(item);
-            }
-            else
-            {
-                InstanceActor(item);
-            }
-        }
     }
 }

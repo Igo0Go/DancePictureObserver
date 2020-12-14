@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7563293773225756027}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6847426203331366456}
   - component: {fileID: 989854445898030942}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Direction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3216605145113782963}
   - component: {fileID: 4729543790487235719}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ManAvatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 3129726790362537664}
   - component: {fileID: 366938217440639006}
   - component: {fileID: 757535672319287840}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_Direction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,8 +318,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuController: {fileID: 0}
-  actorsPanel: {fileID: 0}
+  menuPanel: {fileID: 0}
   danceField: {fileID: 0}
+  tooltip: "\u041E\u0442\u043A\u0440\u044B\u0442\u044C \u043F\u0430\u043D\u0435\u043B\u044C
+    \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0435\u043D\u0438\u0439"
 --- !u!1 &7689251748462636133
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +334,7 @@ GameObject:
   - component: {fileID: 7689251748462636132}
   - component: {fileID: 5622014494314239436}
   - component: {fileID: 7008433923932787431}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_Actor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +395,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 7a6c7f24ec98e014e87c4ee6bdccf6bf, type: 3}
   m_Color: {r: 0.8301887, g: 0.7322891, b: 0.7322891, a: 0.8156863}
   m_FlipX: 0
@@ -444,8 +446,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuController: {fileID: 0}
-  actorsPanel: {fileID: 0}
+  menuPanel: {fileID: 0}
   danceField: {fileID: 0}
+  tooltip: "\u041E\u0442\u043A\u0440\u044B\u0442\u044C \u043F\u0430\u043D\u0435\u043B\u044C
+    \u0434\u043E\u0431\u0430\u043B\u0435\u043D\u0438\u044F \u0438\u0441\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u0435\u0439"
 --- !u!1 &7689251748962673442
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,7 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7689251748962673440}
   - component: {fileID: 7689251748962673441}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ManAvatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7689251748990712548}
   - component: {fileID: 7689251748990712549}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GirlAvatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

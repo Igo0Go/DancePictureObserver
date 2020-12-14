@@ -12,6 +12,9 @@ public abstract class ClickCommandObject : MonoBehaviour
 
     protected virtual void OnStartAction() => ReturnToDefaultState();
 
+    /// <summary>
+    /// Вызывается при активации объекта в сцене Unity
+    /// </summary>
     private void Start()
     {
         if(menuController == null)
@@ -42,6 +45,9 @@ public abstract class ClickCommandObject : MonoBehaviour
     /// <param name="menuController">Объект, который не будет возвращён к изначальному состоянию</param>
     public abstract void ReturnToDefaultStateWithCheck(ClickCommandObject commandObject);
 
+    /// <summary>
+    /// Вызывается при удалении объекта со сцены Unity
+    /// </summary>
     private void OnDestroy()
     {
         menuController.UnsubscribingToAnEvent(this);

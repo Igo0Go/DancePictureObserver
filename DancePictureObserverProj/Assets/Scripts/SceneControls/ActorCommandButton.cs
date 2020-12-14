@@ -85,6 +85,7 @@ public class ActorCommandButton : ClickCommandObject
         }
     }
 
+
     public virtual void StartRotateAroundOrigin(int rotateOriginNumber)
     {
         var lastOrigin = rotateOrigins[currentRotateOrigin];
@@ -102,12 +103,24 @@ public class ActorCommandButton : ClickCommandObject
         Destroy(gameObject);
     }
 
+    public virtual ActorJSONHolder GetHolder()
+    {
+        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation);
+    }
+
+    public virtual void SetOptions(ActorJSONHolder holder)
+    {
+        transform.position = holder.actorPosition;
+        transform.rotation = Quaternion.Euler(holder.actorRotation);
+    }
+
+
     protected override void OnStartAction()
     {
         cam = Camera.main;
         myTransform = transform;
         actorMenuTransform = actorMenu.transform;
-        if(cam.TryGetComponent<ClickMenuController>(out ClickMenuController clickMenuController))
+        if (cam.TryGetComponent<ClickMenuController>(out ClickMenuController clickMenuController))
         {
             clickRayDistance = clickMenuController.clickRayDistance;
             ignoreMask = clickMenuController.ignoreMask;
@@ -116,10 +129,11 @@ public class ActorCommandButton : ClickCommandObject
         CheckMenuOrientation();
     }
 
-    public virtual ActorJSONHolder GetHolder()
+    protected virtual void CheckMenuOrientation()
     {
-        return new ActorJSONHolder(type, myTransform.position, myTransform.rotation);
+        actorMenuTransform.up = Vector2.up;
     }
+
 
     private void Rotate()
     {
@@ -138,11 +152,6 @@ public class ActorCommandButton : ClickCommandObject
         }
     }
 
-    protected virtual void CheckMenuOrientation()
-    {
-        actorMenuTransform.up = Vector2.up;
-    }
-
     private void Move()
     {
         if (moveKey)
@@ -155,12 +164,6 @@ public class ActorCommandButton : ClickCommandObject
 
             myTransform.position = new Vector3(hit.point.x, hit.point.y, -1);
         }
-    }
-
-    public virtual void SetOptions(ActorJSONHolder holder)
-    {
-        transform.position = holder.actorPosition;
-        transform.rotation = Quaternion.Euler(holder.actorRotation);
     }
 
     private void OnDestroy()
