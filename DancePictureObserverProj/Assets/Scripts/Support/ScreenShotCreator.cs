@@ -10,11 +10,15 @@ public class ScreenShotCreator : MonoBehaviour
     [SerializeField]
     private Camera cam = null;
 
+    [SerializeField]
+    private FileReaderModule readerModule;
 
     public void ShowScreen()
     {
         texture.Release();
         var image = CreateScreenshot();
+        readerModule.SavePictureMiniature(image);
+
 
         //texture.width = image.width;
         //texture.height = image.height;

@@ -8,45 +8,66 @@ public class FileReaderModule : MonoBehaviour
     [SerializeField]
     private DanceField field = null;
 
-
     private string saveFilesDirectory = Path.Combine(Application.streamingAssetsPath, "Saves");
 
-    public GameObject saveFilePrefab;
-    public Transform filesPanel;
+    public PictureDataHolder buferHolder;
 
-    private void Start()
+    public void SavePictureConfiguration()
     {
-        Debug.Log(saveFilesDirectory);
+        buferHolder.configuration = string.Join("#", field.GetSaveStringsOnField().ToArray());
     }
 
-    public void Save()
+    public void LoadPictureConfiguration()
     {
-        string path = Path.Combine(saveFilesDirectory, "test.json");
+        char[] separator = { '#' };
+        List<string> result = new List<string>(buferHolder.configuration.Split(separator, StringSplitOptions.RemoveEmptyEntries));
+        field.InstenceActorsWithSettings(result);
+    }
 
-        if(!Directory.Exists(saveFilesDirectory))
+    public void SavePictureMiniature(Texture2D texture)
+    {
+        buferHolder.miniaturePictureTexture = texture.EncodeToPNG();
+    }
+
+    public void Save(List<PictureDataHolder> pictureDataHolders, string danceName)
+    {
+        string saveString = string.Empty;
+        saveString += "DanceName: " + danceName + "\r\n=======================\n\r";
+        foreach (var item in pictureDataHolders)
+        {
+            saveString += item.GetSaveString() + "\r\n=======================\n\r";
+        }
+        string path = Path.Combine(saveFilesDirectory, "test.dance");
+
+        if (!Directory.Exists(saveFilesDirectory))
         {
             Directory.CreateDirectory(saveFilesDirectory);
         }
 
-        if(!File.Exists(path))
+        if (!File.Exists(path))
         {
             File.Create(path);
         }
 
-        string content = string.Join("#", field.GetSaveStringsOnField().ToArray());
-
-        File.WriteAllText(path, content);
-
+        File.WriteAllText(path, saveString);
     }
 
-    public void Load()
+    public (string danceName, List<PictureDataHolder> dataHolders) Load()
     {
-        char[] separator = { '#' };
+        string[] separator = { "\r\n=======================\n\r" };
 
-        string path = Path.Combine(saveFilesDirectory, "test.json");
+        string path = Path.Combine(saveFilesDirectory, "test.dance");
         string content = File.ReadAllText(path);
 
-        List<string> result = new List<string>(content.Split(separator, StringSplitOptions.RemoveEmptyEntries));
-        field.InstenceActorsWithSettings(result);
+        List<PictureDataHolder> holders = new List<PictureDataHolder>();
+
+        string[] items = content.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+        for (int i = 1; i < items.Length; i++)
+        {
+            holders.Add(PictureDataHolder.GetLoadHolder(items[i]));
+        }
+
+        return (items[0], holders);
     }
 }
