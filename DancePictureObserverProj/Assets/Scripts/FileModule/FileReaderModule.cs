@@ -68,6 +68,6 @@ public class FileReaderModule : MonoBehaviour
             holders.Add(PictureDataHolder.GetLoadHolder(items[i]));
         }
 
-        return (items[0], holders);
+        return (items[0].Replace("DanceName: ", string.Empty), holders);
     }
 }

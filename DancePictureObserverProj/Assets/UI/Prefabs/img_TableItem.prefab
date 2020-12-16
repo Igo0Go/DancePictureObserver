@@ -1732,6 +1732,7 @@ GameObject:
   - component: {fileID: 5546467885662614610}
   - component: {fileID: 5546467885662614605}
   - component: {fileID: 1263431862}
+  - component: {fileID: 435410541516722522}
   m_Layer: 5
   m_Name: img_TableItem
   m_TagString: Untagged
@@ -1814,6 +1815,26 @@ MonoBehaviour:
   timeCycleCountInputField: {fileID: 2771324625686990666}
   descriptionInputField: {fileID: 3019612610204868629}
   miniature: {fileID: 5546467885919824103}
+--- !u!114 &435410541516722522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5546467885662614607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5546467885919824097
 GameObject:
   m_ObjectHideFlags: 0
